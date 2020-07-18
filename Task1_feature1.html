@@ -1,0 +1,101 @@
+<!-- In this Task1 with feature 1, I have used Rest  -->
+<!-- Tested input start_date = 01-01-2019   end_date = 31-01-2019 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Chart Demo</title>
+    <script src="https://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
+    <script src="Task1_feature1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            
+           
+            
+            $('#search').click(function(){
+                
+                var st_date=$('#start_date').val();
+                var ed_date=$('#end_date').val();
+                console.log("date = "+st_date+"  "+ed_date);
+                
+            var dataPoints = [];
+            var dataDef = { title: "INR exchange rate against EUR",
+                            xLabel: 'Date',
+                            yLabel: 'Rate',
+                            labelFont: '19pt Arial',
+                            dataPointFont: '10pt Arial',
+                            renderTypes: [CanvasChart.renderType.lines, CanvasChart.renderType.points],
+                            dataPoints: dataPoints
+                            
+                           };
+            
+            
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.exchangeratesapi.io/history?start_at='+st_date+'&end_at='+ed_date+'&base=EUR&symbols=INR',
+                dataType: 'json',
+                success: function (data) {
+                    var obj = data.rates;
+                    //console.log(obj);
+                    
+                    var i;
+                    var d;
+                    for(i=2;i<32;i++){
+                    
+                    
+                    //console.log("date = "+d);
+                    
+                        if((i!=5)&&(i!=6)&&(i!=12)&&(i!=13)&&(i!=19)&&(i!=20)&&(i!=26)&&(i!=27)){
+                        
+                            //continue;
+                            
+                            if(i<10){
+                                    d="2019-01-0".concat(i.toString());
+                                    dataPoints.push({
+                                        x: "0"+i,
+                                        y: obj["2019-01-0"+i].INR
+                                    });
+                                    console.log("date = "+d+", rate = "+obj["2019-01-0"+i].INR);
+                                    
+                                }else{
+                                    d="2019-01-".concat(i.toString());
+                                    dataPoints.push({
+                                        x: i,
+                                        y: obj["2019-01-"+i].INR
+                                    });
+                                    console.log("date = "+d+", rate = "+obj["2019-01-"+i].INR);
+                            
+                                }
+                                
+                        
+                        }
+                    }
+                    
+                    CanvasChart.render('canvas', dataDef);
+                    
+                
+                }
+            });
+            
+            
+            
+            });
+            
+        });
+
+    </script>
+</head>
+<body style="margin-left:50px;margin-top:50px;">
+    <div>
+        start Date:<input type="date" id="start_date" min="2020-01-01 max="2020-06-30" placeholder="yyyy-mm-dd"/>
+        
+        End Date:<input type="date" id="end_date" min="2020-01-01 max="2020-06-30" placeholder="yyyy-mm-dd"/>
+        <button id="search">Get Currency Result</button>
+        
+    </div>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    
+        
+    </div>
+</body>
+</html>
