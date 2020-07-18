@@ -37,7 +37,7 @@ var CanvasChart = function () {
     var getMaxDataYValue = function () {
         for (var i = 0; i < data.dataPoints.length; i++) {
             //if (data.dataPoints[i].y > maxYValue) maxYValue = data.dataPoints[i].y;
-            maxYValue=120;
+            maxYValue=96;
         }
     };
 
@@ -88,6 +88,11 @@ var CanvasChart = function () {
             //y axis labels
             ctx.font = (data.dataPointFont != null) ? data.dataPointFont : '10pt Calibri';
             var txt = Math.round(maxYValue - ((i == 0) ? 0 : yPos / ratio));
+            if(txt<0){
+                
+                continue;
+                
+            }
             var txtSize = ctx.measureText(txt);
             ctx.fillText(txt, margin.left - ((txtSize.width >= 14) ? txtSize.width : 10) - 7, yPos + 4);
 
