@@ -1,19 +1,19 @@
-<!-- In this Task 2, I have used Rest  -->
+<!--IN Task 1, I have used the data of data.json file -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Canvas Chart Demo</title>
     <script src="https://code.jquery.com/jquery-1.6.min.js" type="text/javascript"></script>
-    <script src="Task2.js" type="text/javascript"></script>
+    <script src="Task1_file.js" type="text/javascript"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
             var dataPoints = [];
-            var dataDef = { title: "INR GBP exchange rate against EUR   Green Circle=INR  - = GBP",
-                            xLabel: 'Date',
+            var dataDef = { title: "INR exchange rate against EUR",
+                            xLabel: 'Date--dd-yy starting from 1-jan-2020 to 31-jan-2020',
                             yLabel: 'Rate',
                             labelFont: '15pt Arial',
-                            dataPointFont: '10pt Arial',
+                            dataPointFont: '8pt Arial',
                             renderTypes: [CanvasChart.renderType.lines, CanvasChart.renderType.points],
                             dataPoints: dataPoints
                             
@@ -22,7 +22,7 @@
             
             $.ajax({
                 type: 'GET',
-                url: 'https://api.exchangeratesapi.io/history?start_at=2019-01-01&end_at=2019-01-31&base=EUR&symbols=INR,GBP',
+                url: 'data.json',
                 dataType: 'json',
                 success: function (data) {
                     var obj = data.rates;
@@ -35,27 +35,29 @@
                     
                     //console.log("date = "+d);
                     
-                        if((i!=5)&&(i!=6)&&(i!=12)&&(i!=13)&&(i!=19)&&(i!=20)&&(i!=26)&&(i!=27)){
+                        if((i!=5)&&(i!=12)&&(i!=18)&&(i!=19)&&(i!=25)&&(i!=26)&&(i!=4)&&(i!=11)){
                         
                             //continue;
+                                
                             
                             if(i<10){
-                                    d="2019-01-0".concat(i.toString());
+                                    d="2020-01-0".concat(i.toString());
+                                    var s = obj["2020-01-0"+i].INR;
+                                    //console.log(s["INR"]);
                                     dataPoints.push({
-                                        x: "0"+i,
-                                        y: obj["2019-01-0"+i].INR,
-                                        y2:obj["2019-01-0"+i].GBP
+                                        x: "0"+i+"-20",
+                                        y: s
                                     });
-                                    console.log("date = "+d+", INR = "+obj["2019-01-0"+i].INR+",  GBP = "+obj["2019-01-0"+i].GBP);
+                                    console.log("date = "+d+", rate = "+s);
                                     
                                 }else{
-                                    d="2019-01-".concat(i.toString());
+                                    d="2020-01-".concat(i.toString());
+                                    var s = obj["2020-01-"+i].INR;
                                     dataPoints.push({
-                                        x: i,
-                                        y: obj["2019-01-"+i].INR,
-                                        y2:obj["2019-01-"+i].GBP
+                                        x: i+"-20",
+                                        y: s
                                     });
-                                    console.log("date = "+d+", INR = "+obj["2019-01-"+i].INR+" , GBP = "+obj["2019-01-"+i].GBP);
+                                    console.log("date = "+d+", rate = "+s);
                             
                                 }
                                 
@@ -78,7 +80,7 @@
     </script>
 </head>
 <body style="margin-left:50px;margin-top:50px;">
-    <canvas id="canvas" width="800" height="600"></canvas>
+    <canvas id="canvas" width="1000" height="600"></canvas>
     <div id ="helll">
         
     </div>
